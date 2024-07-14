@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class HomeController {
     @GetMapping("/")
-    @ResponseBody
+    @ResponseBody       // all works
     public String home() {
 
         return "Welcome to the E-Book Application";
