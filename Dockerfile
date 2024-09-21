@@ -1,8 +1,14 @@
-FROM maven: openjdk AS build
-COPY . .
-RUN mvn clean package -DskipTests
+# Шаг 1: Используем официальный образ OpenJDK в качестве базового
+FROM openjdk:22-jdk-slim
 
-FROM openjdk
-COPY --from=build /target/e_book-0.0.1-SNAPSHOT.jar EBook.jar
-EXPOSE 8080
-ENTRYPOINT ["java","-jar","/app/EBook.jar"]
+# Шаг 2: Устанавливаем рабочую директорию в контейнере
+WORKDIR /app
+
+# Шаг 3: Копируем содержимое проекта в контейнер
+COPY . .
+
+# Шаг 4: Собираем проект с использованием Maven
+RUN ./mvnw package -DskipTests
+
+# Шаг 5: Указываем точку входа для выполнения приложения
+ENTRYPOINT ["java", "-jar", "target/e_book-0.0.1-SNAPSHOT.jar"]
